@@ -2,7 +2,7 @@ package crChopChopper.task.bank;
 
 import crChopChopper.task.Task;
 import crChopChopper.var.Variables;
-import crChopChopper.visual.Paint;
+import crChopChopper.visual.ScriptPaint;
 import org.powerbot.script.rt6.ClientContext;
 
 /**
@@ -22,7 +22,7 @@ public class Deposite extends Task<ClientContext> {
 
     @Override
     public void execute() {
-        Paint.status = "Depositing...";
+        ScriptPaint.status = "Depositing";
         ctx.bank.depositInventory();
     }
 }

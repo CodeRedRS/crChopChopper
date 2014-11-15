@@ -2,7 +2,7 @@ package crChopChopper.task.chop;
 
 import crChopChopper.task.Task;
 import crChopChopper.var.Variables;
-import crChopChopper.visual.Paint;
+import crChopChopper.visual.ScriptPaint;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
 
@@ -24,14 +24,14 @@ public class GoTree extends Task<ClientContext> {
 
     @Override
     public void execute() {
-        GameObject tree = ctx.objects.id(Variables.selectedTreeID).nearest().poll();
+        GameObject tree = ctx.objects.nearest().poll();
         if (tree.tile().distanceTo(ctx.players.local()) < 15) {
             if (!tree.inViewport()) {
-                Paint.status = "Turning to tree...";
+                ScriptPaint.status = "Turning to tree";
                 ctx.camera.turnTo(tree);
             }
         } else {
-            Paint.status = "Walking to tree...";
+            ScriptPaint.status = "Walking to tree";
             ctx.movement.step(tree.tile());
         }
     }

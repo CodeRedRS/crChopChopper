@@ -10,7 +10,7 @@ import java.awt.*;
 /**
  * Created by Dakota on 10/22/2014.
  */
-public class Paint {
+public class ScriptPaint {
     public static int paintX = 2, paintY = 2, paintW = 160, paintH;
 
     // TIMERS \\

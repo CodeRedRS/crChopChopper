@@ -6,7 +6,7 @@ import crChopChopper.var.WIDGET;
 import crChopChopper.visual.ChopChopperGUI;
 import crChopChopper.visual.Formatting;
 import crChopChopper.visual.MousePaint;
-import crChopChopper.visual.Paint;
+import crChopChopper.visual.ScriptPaint;
 import org.powerbot.script.*;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Hud;
@@ -28,7 +28,7 @@ public class ChopChopper extends PollingScript<ClientContext> implements PaintLi
 
     public void repaint(Graphics g) {
         MousePaint.drawMouse(g, ctx);
-        Paint.drawPaint(g, ctx);
+        ScriptPaint.drawPaint(g, ctx);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class ChopChopper extends PollingScript<ClientContext> implements PaintLi
     public void savePaint(String name) {
         System.out.println("Screenshot saved at: " + ctx.controller.script().getStorageDirectory().getPath());
         repaint(img.createGraphics());
-        img = img.getSubimage(Paint.paintX, Paint.paintY, Paint.paintW + 1, Paint.paintH + 1);
+        img = img.getSubimage(ScriptPaint.paintX, ScriptPaint.paintY, ScriptPaint.paintW + 1, ScriptPaint.paintH + 1);
         final File path = new File(ctx.controller.script().getStorageDirectory().getPath(), name + ".png");
 
         try {
@@ -53,7 +53,7 @@ public class ChopChopper extends PollingScript<ClientContext> implements PaintLi
 
     @Override
     public void start() {
-        Paint.status = "Starting script...";
+        ScriptPaint.status = "Starting script";
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -83,7 +83,7 @@ public class ChopChopper extends PollingScript<ClientContext> implements PaintLi
         }
 
         while (ctx.players.local().animation() == 16700 || ctx.players.local().stance() == 16701) {
-            Paint.status = "Firemaking...";
+            ScriptPaint.status = "Firemaking";
             Condition.sleep(Random.nextInt(50, 100));
         }
 
@@ -108,13 +108,13 @@ public class ChopChopper extends PollingScript<ClientContext> implements PaintLi
         String s = messageEvent.text();
 
         if (s.contains("You get some")) {
-            Paint.logC++;
+            ScriptPaint.logC++;
         }
         if (s.contains("The fire catches")) {
-            Paint.burnC++;
+            ScriptPaint.burnC++;
         }
         if (s.contains("You add a log to the fire")) {
-            Paint.burnC++;
+            ScriptPaint.burnC++;
         }
     }
 }

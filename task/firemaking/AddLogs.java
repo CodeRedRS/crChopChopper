@@ -3,7 +3,7 @@ package crChopChopper.task.firemaking;
 import crChopChopper.task.Task;
 import crChopChopper.var.Variables;
 import crChopChopper.var.WIDGET;
-import crChopChopper.visual.Paint;
+import crChopChopper.visual.ScriptPaint;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
 import org.powerbot.script.rt6.ClientContext;
@@ -33,7 +33,7 @@ public class AddLogs extends Task<ClientContext> {
             if (backpackLogs > 0) {
                 if (fire.inViewport()) {
                     fire.interact(false, "Use");
-                    Paint.status = "Adding to fire...";
+                    ScriptPaint.status = "Adding to fire";
                     Condition.sleep(Random.nextInt(750, 1000));
                     if (ctx.players.local().idle()) {
                         if (WIDGET.CRAFT_INTERFACE.visible()) {

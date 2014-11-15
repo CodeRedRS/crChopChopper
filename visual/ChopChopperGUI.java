@@ -96,7 +96,7 @@ public class ChopChopperGUI extends JFrame {
         startBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Paint.startTime = System.currentTimeMillis();
+                ScriptPaint.startTime = System.currentTimeMillis();
 
                 Formatting.startLvlWc = ctx.skills.level(Skill.WOODCUTTING.getSkillID());
                 Formatting.startLvlFm = ctx.skills.level(Skill.FIREMAKING.getSkillID());
@@ -121,13 +121,13 @@ public class ChopChopperGUI extends JFrame {
 
                 if (Variables.dropLogs) {
                     taskList.add(new Drop(ctx));
-                    Paint.mode = "DROP";
+                    ScriptPaint.mode = "DROP";
                 } else if (Variables.burnLogs) {
                     taskList.addAll(Arrays.asList(new LightFire(ctx), new AddLogs(ctx)));
-                    Paint.mode = "BURN";
+                    ScriptPaint.mode = "BURN";
                 } else {
                     taskList.addAll(Arrays.asList(new GoBank(ctx), new OpenBank(ctx), new Deposite(ctx), new CloseBank(ctx)));
-                    Paint.mode = "BANK";
+                    ScriptPaint.mode = "BANK";
                 }
                 taskList.addAll(Arrays.asList(new ChopTree(ctx), new GoTree(ctx), new Interface(ctx), new Antiban(ctx)));
 
