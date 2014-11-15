@@ -21,7 +21,10 @@ public class GoBank extends Task<ClientContext> {
     @Override
     public void execute() {
         Paint.status = "Going to bank...";
-        ctx.movement.step(ctx.bank.nearest().tile());
-        ctx.camera.turnTo(ctx.bank.nearest());
+        ctx.movement.step(ctx.bank.nearest());
+        if (ctx.bank.nearest().tile().distanceTo(ctx.players.local()) < 15) {
+            Paint.status = "Turn to bank...";
+            ctx.camera.turnTo(ctx.bank.nearest());
+        }
     }
 }

@@ -20,20 +20,15 @@ public class LightFire extends Task<ClientContext> {
     @Override
     public boolean activate() {
         return ctx.backpack.select().count() == 28
-                && ctx.backpack.select().id(Variables.OBJECT.LOGS).count() > 0;
+                && ctx.backpack.select().id(Variables.OBJECT.LOGS).count() > 0
+                && ctx.objects.select().id(Variables.OBJECT.FIRE).poll().inViewport();
     }
 
     @Override
     public void execute() {
         GameObject fire = ctx.objects.select().id(Variables.OBJECT.FIRE).nearest().poll();
-        Item log;
-
-        if (!fire.inViewport()) {
-            ctx.camera.turnTo(fire);
-            log = ctx.backpack.select().id(Variables.OBJECT.LOGS).poll();
-            log.interact("light");
-            Condition.sleep(Random.nextInt(900, 1500));
-
-        }
+        Item log = ctx.backpack.select().id(Variables.OBJECT.LOGS).poll();
+        log.interact("light");
+        Condition.sleep(Random.nextInt(900, 1500));
     }
 }

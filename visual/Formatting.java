@@ -20,8 +20,8 @@ public class Formatting {
     public static NumberFormat format = new DecimalFormat("###,###,###");
 
     Date curDate = new Date();
-    public String dateToStr = formatDate.format(curDate);
     SimpleDateFormat formatDate = new SimpleDateFormat("dd-M-yyyy (hh-mm-ss)");
+    public String dateToStr = formatDate.format(curDate);
 
     public static String formatTime(final long time) {
         final int sec = (int) (time / 1000), h = sec / 3600, m = sec / 60 % 60, s = sec % 60;

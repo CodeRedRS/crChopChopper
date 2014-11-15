@@ -26,9 +26,11 @@ public class GoTree extends Task<ClientContext> {
     public void execute() {
         GameObject tree = ctx.objects.nearest().poll();
         if (!tree.inViewport()) {
-            Paint.status = "Going to tree...";
             ctx.movement.step(tree.tile());
-            ctx.camera.turnTo(ctx.bank.nearest());
+            if (tree.tile().distanceTo(ctx.players.local()) < 15) {
+                Paint.status = "Turn to tree...";
+                ctx.camera.turnTo(tree);
+            }
         }
     }
 }
