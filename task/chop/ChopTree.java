@@ -20,24 +20,31 @@ public class ChopTree extends Task<ClientContext> {
     @Override
     public boolean activate() {
         return ctx.backpack.select().count() < 28
-                && ctx.players.local().animation() == -1
-                && ctx.objects.select().id(Variables.selectedTreeID).nearest().poll().tile().distanceTo(ctx.players.local()) < 15
+                && (int) ctx.objects.select().id(Variables.selectedTreeID).nearest().poll().tile().distanceTo(ctx.players.local()) < 7
                 && !ctx.objects.select().id(Variables.selectedTreeID).isEmpty();
     }
 
     @Override
     public void execute() {
-        if (!ctx.players.local().idle()) {
+        if (!ctx.players.local().idle() && ctx.objects.nearest().poll().tile().distanceTo(ctx.players.local().tile()) == 1) {
             Condition.wait(new Callable<Boolean>() {
                 @Override
                 public Boolean call() throws Exception {
-                    return ctx.players.local().animation() == -1;
+                    return ctx.players.local().idle() || ctx.objects.nearest().poll().tile().distanceTo(ctx.players.local().tile()) > 1;
                 }
-            });
+            }, 10, 5);
         } else {
-            GameObject tree = ctx.objects.nearest().poll();
+            GameObject tree = ctx.objects.select().id(Variables.selectedTreeID).nearest().poll();
             Paint.status = "Chopping...";
             tree.interact("Chop", tree.name());
+            if (ctx.players.local().inMotion()) {
+                Condition.wait(new Callable<Boolean>() {
+                    @Override
+                    public Boolean call() throws Exception {
+                        return !ctx.players.local().inMotion();
+                    }
+                });
+            }
         }
     }
 }

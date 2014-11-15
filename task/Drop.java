@@ -13,14 +13,6 @@ public class Drop extends Task<ClientContext> {
         super(ctx);
     }
 
-    public void dropAllLogs() {
-        for (Item i : ctx.backpack.items()) {
-            if (i.name().toLowerCase().contains("logs")) {
-                i.interact("Drop");
-            }
-        }
-    }
-
     @Override
     public boolean activate() {
         return ctx.backpack.select().count() == 28;
@@ -29,6 +21,10 @@ public class Drop extends Task<ClientContext> {
     @Override
     public void execute() {
         Paint.status = "Dropping...";
-        dropAllLogs();
+        for (Item i : ctx.backpack.items()) {
+            if (i.name().toLowerCase().contains("logs")) {
+                i.interact("Drop");
+            }
+        }
     }
 }
