@@ -25,7 +25,7 @@ public class GoTree extends Task<ClientContext> {
     @Override
     public void execute() {
         GameObject tree = ctx.objects.nearest().poll();
-        if (tree.tile().distanceTo(ctx.players.local()) < 15) {
+        if (tree.tile().distanceTo(ctx.players.local()) < 25) {
             if (!tree.inViewport()) {
                 ScriptPaint.status = "Turning to tree";
                 ctx.camera.turnTo(tree);

@@ -21,8 +21,6 @@ public class ChopTree extends Task<ClientContext> {
     @Override
     public boolean activate() {
         return ctx.backpack.select().count() < 28
-                && ((int) ctx.objects.select().id(Variables.selectedTreeID).nearest().poll().tile().distanceTo(ctx.players.local()) < 25
-                || ctx.objects.select().id(Variables.selectedTreeID).nearest().poll().inViewport())
                 && !ctx.objects.select().id(Variables.selectedTreeID).isEmpty();
     }
 
@@ -38,8 +36,8 @@ public class ChopTree extends Task<ClientContext> {
             }, 10, 5);
         } else {
             GameObject tree = ctx.objects.id(Variables.selectedTreeID).nearest().poll();
-            ScriptPaint.status = "Clicking tree";
             tree.interact("Chop", tree.name());
+            ScriptPaint.status = "Clicking tree";
             Condition.sleep(Random.nextInt(50, 100));
             if (ctx.players.local().inMotion()) {
                 Condition.wait(new Callable<Boolean>() {
