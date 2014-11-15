@@ -10,7 +10,6 @@ public class Variables {
     public static boolean burnLogs;
     public static boolean bankLogs;
     public static boolean active;
-
     public static boolean loggedin;
 
 

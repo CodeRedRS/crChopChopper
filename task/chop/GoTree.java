@@ -18,19 +18,19 @@ public class GoTree extends Task<ClientContext> {
     @Override
     public boolean activate() {
         return ctx.backpack.select().count() < 28
-                && !ctx.objects.select().id(Variables.selectedTreeID).isEmpty()
-                && ctx.players.local().animation() == -1;
+                && ctx.players.local().animation() == -1
+                && !ctx.objects.select().id(Variables.selectedTreeID).nearest().poll().inViewport()
+                && !ctx.objects.select().id(Variables.selectedTreeID).isEmpty();
     }
 
     @Override
     public void execute() {
         GameObject tree = ctx.objects.nearest().poll();
-        if (!tree.inViewport()) {
+        if (tree.tile().distanceTo(ctx.players.local()) < 15) {
+            Paint.status = "Turn to tree...";
+            ctx.camera.turnTo(tree);
+        } else {
             ctx.movement.step(tree.tile());
-            if (tree.tile().distanceTo(ctx.players.local()) < 15) {
-                Paint.status = "Turn to tree...";
-                ctx.camera.turnTo(tree);
-            }
         }
     }
 }
