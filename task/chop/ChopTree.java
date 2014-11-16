@@ -21,32 +21,25 @@ public class ChopTree extends Task<ClientContext> {
     @Override
     public boolean activate() {
         return ctx.backpack.select().count() < 28
+                && ctx.players.local().animation() == -1
+                && ctx.objects.select().id(Variables.selectedTreeID).nearest().poll().inViewport()
                 && !ctx.objects.select().id(Variables.selectedTreeID).isEmpty();
     }
 
     @Override
     public void execute() {
-        if (!ctx.players.local().idle() && (int) ctx.objects.select().id(Variables.selectedTreeID).nearest().poll().tile().distanceTo(ctx.players.local()) <= 2) {
+        GameObject tree = ctx.objects.id(Variables.selectedTreeID).nearest().poll();
+        tree.interact("Chop", tree.name());
+        ScriptPaint.status = "Chopping tree";
+        Condition.sleep(Random.nextInt(50, 100));
+
+        if (ctx.players.local().inMotion()) {
             Condition.wait(new Callable<Boolean>() {
                 @Override
                 public Boolean call() throws Exception {
-                    ScriptPaint.status = "Waiting to cut tree";
-                    return ctx.players.local().idle() || (int) ctx.objects.select().id(Variables.selectedTreeID).nearest().poll().tile().distanceTo(ctx.players.local()) > 2;
+                    return !ctx.players.local().inMotion() && ctx.players.local().animation() == -1;
                 }
-            }, 10, 5);
-        } else {
-            GameObject tree = ctx.objects.id(Variables.selectedTreeID).nearest().poll();
-            tree.interact("Chop", tree.name());
-            ScriptPaint.status = "Clicking tree";
-            Condition.sleep(Random.nextInt(50, 100));
-            if (ctx.players.local().inMotion()) {
-                Condition.wait(new Callable<Boolean>() {
-                    @Override
-                    public Boolean call() throws Exception {
-                        return !ctx.players.local().inMotion();
-                    }
-                });
-            }
+            });
         }
     }
 }
