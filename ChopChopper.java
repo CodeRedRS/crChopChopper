@@ -21,7 +21,7 @@ import java.io.File;
  */
 @Script.Manifest(name = "ChopChopper", description = "Basic woodcutter with drop, burn, and banking support", properties = "client=6")
 public class ChopChopper extends PollingScript<ClientContext> implements PaintListener, MessageListener {
-    public static double version = 0.09;
+    public static double version = 0.10;
     final int width = ctx.game.dimensions().width, height = ctx.game.dimensions().height;
     BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
@@ -35,6 +35,7 @@ public class ChopChopper extends PollingScript<ClientContext> implements PaintLi
     public void stop() {
         Formatting f = new Formatting();
         savePaint(f.dateToStr);
+        Toolkit.getDefaultToolkit().beep();
     }
 
     public void savePaint(String name) {

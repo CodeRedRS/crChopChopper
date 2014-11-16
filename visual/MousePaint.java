@@ -3,13 +3,11 @@ package crChopChopper.visual;
 import org.powerbot.script.rt6.ClientContext;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 /**
  * Created by CodeRed on 10/30/2014.
  */
-public class MousePaint implements MouseListener {
+public class MousePaint {
     public static Color c = Color.GREEN;
     static MouseTrail trail = new MouseTrail();
 
@@ -48,31 +46,6 @@ public class MousePaint implements MouseListener {
         */
 
         g1.drawArc(p.x - (outerSize), p.y - (outerSize), outerSize * 2, outerSize * 2, 0, 360);
-
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        c.equals(Color.RED);
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        c.equals(Color.GREEN);
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
 
     }
 

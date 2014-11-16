@@ -3,6 +3,7 @@ package crChopChopper.task.chop;
 import crChopChopper.task.Task;
 import crChopChopper.var.Variables;
 import crChopChopper.visual.ScriptPaint;
+import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
 
@@ -18,7 +19,6 @@ public class GoTree extends Task<ClientContext> {
     @Override
     public boolean activate() {
         return ctx.backpack.select().count() < 28
-                && ctx.objects.select().id(Variables.selectedTreeID).nearest().poll().tile().distanceTo(ctx.players.local()) < 35
                 && ctx.players.local().animation() == -1
                 && !ctx.objects.select().id(Variables.selectedTreeID).nearest().poll().inViewport()
                 && !ctx.objects.select().id(Variables.selectedTreeID).isEmpty();
@@ -33,7 +33,8 @@ public class GoTree extends Task<ClientContext> {
                 ctx.camera.turnTo(tree);
             } else {
                 ScriptPaint.status = "Walking to tree";
-                ctx.movement.step(tree.tile());
+                Tile t = ctx.movement.findPath(tree).end().derive(1,1).tile();
+                ctx.movement.step(t);
             }
         }
     }

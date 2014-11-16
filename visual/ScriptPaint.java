@@ -2,6 +2,8 @@ package crChopChopper.visual;
 
 import crChopChopper.ChopChopper;
 import crChopChopper.var.Variables;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Constants;
 
@@ -10,23 +12,39 @@ import java.awt.*;
 /**
  * Created by Dakota on 10/22/2014.
  */
-public class ScriptPaint {
+public class ScriptPaint extends ClientAccessor {
     public static int paintX = 2, paintY = 2, paintW = 160, paintH;
-
     // TIMERS \\
     public static long startTime, runTime;
-
     // PAINT STUFF \\
     public static String status;
     public static String mode;
     public static int logC, burnC;
     static Color bg = new Color(0, 0, 0, 128);
 
+    public ScriptPaint(ClientContext ctx) {
+        super(ctx);
+    }
+
+    private static void drawPoint(Graphics g, Tile tile, String name, Color c, int s, ClientContext ctx) {
+        Point p = tile.matrix(ctx).mapPoint();
+
+        g.setColor(c);
+        g.drawString(name, p.x + s, p.y + (s / 2));
+        g.fillArc(p.x - (s / 2), p.y - (s / 2), s, s, 0, 360);
+        g.setColor(Color.BLACK);
+        g.drawArc(p.x - (s / 2), p.y - (s / 2), s, s, 0, 360);
+    }
+
     public static void drawPaint(Graphics g1, ClientContext ctx) {
         // TIME \\
         runTime = ctx.controller.script().getTotalRuntime();
-        if (status != null && startTime > 0 && Variables.loggedin == true) {
+        if (status != null && startTime > 0 && Variables.loggedin) {
             Graphics2D g = (Graphics2D) g1;
+            if (ctx.objects.select().id(Variables.selectedTreeID).nearest().poll() != null) {
+                Graphics2D obj = (Graphics2D) g1.create();
+                drawPoint(obj, ctx.objects.select().id(Variables.selectedTreeID).nearest().poll().tile(), "Current tree", Color.GREEN, 10, ctx);
+            }
 
             g.setColor(bg);
             g.fillRect(paintX, paintY, paintW, 207);
