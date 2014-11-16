@@ -9,6 +9,8 @@ import org.powerbot.script.Random;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
 
+import java.util.concurrent.Callable;
+
 /**
  * Created by CodeRed on 10/28/2014.
  */
@@ -27,8 +29,8 @@ public class AddLogs extends Task<ClientContext> {
     @Override
     public void execute() {
         GameObject fire = ctx.objects.select().id(Variables.OBJECT.FIRE).nearest().poll();
-
         int backpackLogs = ctx.backpack.select().id(Variables.OBJECT.LOGS).count();
+
         if (ctx.players.local().idle()) {
             if (backpackLogs > 0) {
                 if (fire.inViewport()) {
@@ -41,7 +43,12 @@ public class AddLogs extends Task<ClientContext> {
                             Condition.sleep(Random.nextInt(750, 1000));
                         }
                     }
-                    Condition.sleep(Random.nextInt(750, 1000));
+                    Condition.wait(new Callable<Boolean>() {
+                        @Override
+                        public Boolean call() throws Exception {
+                            return ctx.backpack.select().id(Variables.OBJECT.LOGS).count() < 1 || !ctx.objects.select().id(Variables.OBJECT.FIRE).nearest().poll().inViewport();
+                        }
+                    });
                 }
             }
         }

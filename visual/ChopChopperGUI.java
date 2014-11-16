@@ -3,7 +3,6 @@ package crChopChopper.visual;
 import crChopChopper.task.Drop;
 import crChopChopper.task.Interface;
 import crChopChopper.task.Task;
-import crChopChopper.task.antiban.Antiban;
 import crChopChopper.task.bank.CloseBank;
 import crChopChopper.task.bank.Deposite;
 import crChopChopper.task.bank.GoBank;
@@ -129,7 +128,7 @@ public class ChopChopperGUI extends JFrame {
                     taskList.addAll(Arrays.asList(new GoBank(ctx), new OpenBank(ctx), new Deposite(ctx), new CloseBank(ctx)));
                     ScriptPaint.mode = "BANK";
                 }
-                taskList.addAll(Arrays.asList(new ChopTree(ctx), new GoTree(ctx), new Interface(ctx), new Antiban(ctx)));
+                taskList.addAll(Arrays.asList(new ChopTree(ctx), new GoTree(ctx), new Interface(ctx)));
 
                 dispose();
             }
