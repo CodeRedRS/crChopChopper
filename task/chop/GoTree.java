@@ -3,7 +3,6 @@ package crChopChopper.task.chop;
 import crChopChopper.task.Task;
 import crChopChopper.var.Variables;
 import crChopChopper.visual.ScriptPaint;
-import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
 
@@ -33,8 +32,7 @@ public class GoTree extends Task<ClientContext> {
                 ctx.camera.turnTo(tree);
             } else {
                 ScriptPaint.status = "Walking to tree";
-                Tile t = ctx.movement.findPath(tree).end().derive(1,1).tile();
-                ctx.movement.step(t);
+                ctx.movement.step(tree);
             }
         }
     }
