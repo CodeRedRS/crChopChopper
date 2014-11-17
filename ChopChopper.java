@@ -3,8 +3,8 @@ package crChopChopper;
 import crChopChopper.task.Task;
 import crChopChopper.var.Variables;
 import crChopChopper.var.WIDGET;
-import crChopChopper.visual.ChopChopperGUI;
 import crChopChopper.visual.Formatting;
+import crChopChopper.visual.GUI;
 import crChopChopper.visual.MousePaint;
 import crChopChopper.visual.ScriptPaint;
 import org.powerbot.script.*;
@@ -21,14 +21,17 @@ import java.io.File;
  */
 @Script.Manifest(name = "ChopChopper", description = "Basic woodcutter with drop, burn, and banking support", properties = "client=6")
 public class ChopChopper extends PollingScript<ClientContext> implements PaintListener, MessageListener {
-    public static double version = 0.10;
+    public static double version = 0.11;
+    public static Tile b;
     final int width = ctx.game.dimensions().width, height = ctx.game.dimensions().height;
     BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
+    private GUI gui;
 
     public void repaint(Graphics g) {
-        MousePaint.drawMouse(g, ctx);
-        ScriptPaint.drawPaint(g, ctx);
+        if (gui.guiFinished) {
+            MousePaint.drawMouse(g, ctx);
+            ScriptPaint.drawPaint(g, ctx);
+        }
     }
 
     @Override
@@ -55,51 +58,36 @@ public class ChopChopper extends PollingScript<ClientContext> implements PaintLi
     @Override
     public void start() {
         ScriptPaint.status = "Starting script";
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ChopChopperGUI frame = new ChopChopperGUI(ctx);
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
         WIDGET.initWidgets(ctx);
+        gui = new GUI(ctx);
+
+
     }
 
     @Override
     public void poll() {
+        if (gui.guiFinished) {
 
-        if (!ctx.game.loggedIn()) {
-            Variables.loggedin = false;
-        } else {
-            Variables.loggedin = true;
-        }
-
-        if (!ctx.hud.opened(Hud.Window.BACKPACK)) {
-            ctx.hud.open(Hud.Window.BACKPACK);
-        }
-
-        while (ctx.players.local().animation() == 16700 || ctx.players.local().stance() == 16701) {
-            ScriptPaint.status = "Firemaking";
-            Condition.sleep(Random.nextInt(50, 100));
-        }
-
-
-        if (ctx.game.loggedIn()) {
-            if (ctx.camera.pitch() < 50) {
-                ctx.camera.pitch(50);
+            if (!ctx.game.loggedIn()) {
+                Variables.loggedin = false;
+            } else {
+                Variables.loggedin = true;
             }
-            for (Task task : ChopChopperGUI.taskList) {
+
+            if (!ctx.hud.opened(Hud.Window.BACKPACK)) {
+                ctx.hud.open(Hud.Window.BACKPACK);
+            }
+
+            while (ctx.players.local().animation() == 16700 || ctx.players.local().stance() == 16701) {
+                ScriptPaint.status = "Firemaking";
+                Condition.sleep(Random.nextInt(50, 100));
+            }
+
+            for (Task task : gui.taskList) {
                 if (task.activate()) {
                     task.execute();
                 }
             }
-        } else {
-            Condition.sleep(Random.nextInt(50, 100));
         }
 
     }

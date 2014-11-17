@@ -23,7 +23,6 @@ public class ChopTree extends Task<ClientContext> {
         return ctx.backpack.select().count() < 28
                 && ctx.players.local().animation() == -1
                 && ctx.objects.select().id(Variables.selectedTreeID).nearest().poll().inViewport()
-                && !ctx.objects.select().id(Variables.OBJECT.FIRE).nearest().poll().inViewport()
                 && !ctx.objects.select().id(Variables.selectedTreeID).isEmpty();
     }
 

@@ -3,6 +3,7 @@ package crChopChopper.task.chop;
 import crChopChopper.task.Task;
 import crChopChopper.var.Variables;
 import crChopChopper.visual.ScriptPaint;
+import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
 
@@ -28,11 +29,12 @@ public class GoTree extends Task<ClientContext> {
         GameObject tree = ctx.objects.nearest().poll();
         if (!tree.inViewport()) {
             if (tree.tile().distanceTo(ctx.players.local()) < 15) {
-                ScriptPaint.status = "Turn to tree...";
+                ScriptPaint.status = "Turn to tree";
                 ctx.camera.turnTo(tree);
             } else {
+                Tile t = ctx.movement.findPath(tree.tile()).end();
+                ctx.movement.step(t);
                 ScriptPaint.status = "Walking to tree";
-                ctx.movement.step(tree);
             }
         }
     }
