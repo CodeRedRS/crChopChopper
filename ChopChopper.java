@@ -28,10 +28,8 @@ public class ChopChopper extends PollingScript<ClientContext> implements PaintLi
     private GUI gui;
 
     public void repaint(Graphics g) {
-        if (gui.guiFinished) {
-            MousePaint.drawMouse(g, ctx);
-            ScriptPaint.drawPaint(g, ctx);
-        }
+        MousePaint.drawMouse(g, ctx);
+        ScriptPaint.drawPaint(g, ctx);
     }
 
     @Override
@@ -57,6 +55,7 @@ public class ChopChopper extends PollingScript<ClientContext> implements PaintLi
 
     @Override
     public void start() {
+        b = ctx.bank.nearest().tile();
         ScriptPaint.status = "Starting script";
         WIDGET.initWidgets(ctx);
         gui = new GUI(ctx);
@@ -66,13 +65,9 @@ public class ChopChopper extends PollingScript<ClientContext> implements PaintLi
 
     @Override
     public void poll() {
-        if (gui.guiFinished) {
+        if (GUI.guiFinished) {
 
-            if (!ctx.game.loggedIn()) {
-                Variables.loggedin = false;
-            } else {
-                Variables.loggedin = true;
-            }
+            Variables.loggedin = ctx.game.loggedIn();
 
             if (!ctx.hud.opened(Hud.Window.BACKPACK)) {
                 ctx.hud.open(Hud.Window.BACKPACK);

@@ -12,6 +12,7 @@ import crChopChopper.task.chop.GoTree;
 import crChopChopper.task.firemaking.AddLogs;
 import crChopChopper.task.firemaking.LightFire;
 import crChopChopper.var.Variables;
+import crChopChopper.var.enums.Skill;
 import crChopChopper.var.enums.Tree;
 import org.powerbot.script.rt6.ClientContext;
 
@@ -26,9 +27,8 @@ import java.util.Arrays;
  * Created by CodeRed on 11/16/2014.
  */
 public class GUI {
-    public boolean guiFinished = false;
+    public static boolean guiFinished = false;
     public final java.util.List<Task> taskList = new ArrayList<Task>();
-    public int METHOD;
 
     public GUI(final ClientContext ctx) {
         final JFrame FRAME = new JFrame("GUI");
@@ -44,12 +44,21 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ScriptPaint.status = "GUI";
+
+                ScriptPaint.startTime = System.currentTimeMillis();
+
+                Formatting.startLvlWc = ctx.skills.level(Skill.WOODCUTTING.getSkillID());
+                Formatting.startLvlFm = ctx.skills.level(Skill.FIREMAKING.getSkillID());
+
+                Formatting.startXpWc = ctx.skills.experience(Skill.WOODCUTTING.getSkillID());
+                Formatting.startXpFm = ctx.skills.experience(Skill.FIREMAKING.getSkillID());
+
                 final Tree TREE = (Tree) TREES.getSelectedItem();
                 int METHOD = METHODS.getSelectedIndex();
                 Variables.selectedTreeID = TREE.getId();
                 Variables.selectedTreeName = TREE.toString();
-                taskList.addAll(Arrays.asList(new ChopTree(ctx), new GoTree(ctx), new Interface(ctx)));
 
+                taskList.addAll(Arrays.asList(new ChopTree(ctx), new GoTree(ctx), new Interface(ctx)));
                 switch (METHOD) {
                     case 0:
                         taskList.add(new Drop(ctx));

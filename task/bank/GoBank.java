@@ -1,6 +1,5 @@
 package crChopChopper.task.bank;
 
-import crChopChopper.ChopChopper;
 import crChopChopper.task.Task;
 import crChopChopper.visual.ScriptPaint;
 import org.powerbot.script.rt6.ClientContext;
@@ -23,11 +22,11 @@ public class GoBank extends Task<ClientContext> {
     @Override
     public void execute() {
         if (!ctx.bank.poll().inViewport()) {
-            if (ChopChopper.b.distanceTo(ctx.players.local()) < 15) {
+            if (ctx.bank.nearest().tile().distanceTo(ctx.players.local()) < 15) {
                 ScriptPaint.status = "Turn to bank";
                 ctx.camera.turnTo(ctx.bank.nearest());
             } else {
-                ctx.movement.step(ChopChopper.b);
+                ctx.movement.step(ctx.bank.nearest().tile());
                 ScriptPaint.status = "Walking to bank";
             }
         }
