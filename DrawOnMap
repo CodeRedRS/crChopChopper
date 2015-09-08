@@ -1,0 +1,15 @@
+
+
+
+        GameObject t = ctx.objects.select().name(Tree.OAK.getName()).nearest().poll();
+        GameObject allTrees = ctx.objects.name(Tree.OAK.getName()).viewable().poll();
+
+        Point treePoint = t.tile().matrix(ctx).mapPoint();
+        Point allTreePoints = allTrees.tile().matrix(ctx).mapPoint();
+        g2.drawOval(treePoint.x - 5, treePoint.y - 5, 10, 10);
+
+        Point p = t.centerPoint();
+        g.fillArc(p.x - 5, p.y - 5, 10, 10, 0, 360);
+
+        g2.setColor(Color.red);
+        g2.fillOval(allTreePoints.x - 5, allTreePoints.y - 5, 10, 10);
